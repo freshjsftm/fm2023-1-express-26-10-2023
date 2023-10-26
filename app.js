@@ -1,27 +1,19 @@
 const express = require('express');
+const validate = require('./middlewares/validate.mw');
+const UserController = require('./controllers/user.controller');
+
 const app = express(); //create new server
 const PORT = 3000;
 
+const parse = express.json();
+
 // ROUTING
-app.get('/', (req, res, next) => {
-  req.test = 1;
-  console.log('first');
-  if(true===true){
-    res.send('true'+req.test);
-  }
-  next();
-},
-(req, res, next) => {
-  req.test += 10;
-  console.log('second');
-  next();
-},
-(req, res) => {
-  res.send('third'+req.test);
+app.get('/', (req, res) => {
+  res.send('hi');
 });
-// app.post('/', ()=>{})
+app.post('/users', parse, validate, UserController.create);
 // app.delete('/', ()=>{})
-// app.put('/', ()=>{})
+app.put('/users', parse, validate, UserController.update);
 // app.patch('/', ()=>{})
 
 app.listen(PORT, () => {
